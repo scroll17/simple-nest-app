@@ -1,0 +1,17 @@
+doctype html
+html(lang="en")
+    head
+        meta(charset="UTF-8")
+        meta(http-equiv="X-UA-Compatible", content="IE=edge")
+        meta(name="viewport", content="width=device-width, initial-scale=1.0")
+        title SuperBlog!
+    body
+        h1 Welcome to SuperBlog!
+        // Конструкция "each" позволяет перебрать массив и для каждого элемента сгенерировать разметку
+        ul
+            each post in articles
+                // #{...} — интерполяция. Так шаблонизатор понимает, что сюда надо встроить данные.
+                li #{post.title}
+                    a(href=post.id)  Читать
+
+        a(href="create") Создать
