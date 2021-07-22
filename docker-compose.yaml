@@ -1,0 +1,38 @@
+version: "3"
+services:
+  api:
+    image: node:14.17.0
+    container_name: simple_shop_api
+    working_dir: /home/node/simple-shop
+    tty: true
+    restart: "always"
+    links:
+      - database:database
+      - redis:redis
+    ports:
+      - 3100:3100
+    volumes:
+      - ./:/home/node/simple-shop
+    entrypoint: /bin/bash
+    command: -s
+
+  database:
+    image: mdillon/postgis:9.6
+    container_name: simple_shop_database
+    restart: "always"
+    ports:
+      - 5439:5432
+    environment:
+      - POSTGRES_ROOT_PASSWORD=toor
+      - POSTGRES_DB=simple_shop
+      - POSTGRES_USER=test
+      - POSTGRES_PASSWORD=test
+
+  redis:
+    image: redis:5.0.3-alpine
+    container_name: simple_shop_redis
+    ports:
+      - 6382:6379
+    tty: true
+    restart: "always"
+
