@@ -21,9 +21,8 @@ services:
     container_name: simple_shop_database
     restart: "always"
     ports:
-      - 5439:5432
+      - 5442:5432
     environment:
-      - POSTGRES_ROOT_PASSWORD=toor
       - POSTGRES_DB=simple_shop
       - POSTGRES_USER=test
       - POSTGRES_PASSWORD=test
