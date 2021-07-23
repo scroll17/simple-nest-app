@@ -12,6 +12,6 @@ html(lang="en")
             each post in articles
                 // #{...} — интерполяция. Так шаблонизатор понимает, что сюда надо встроить данные.
                 li #{post.title}
-                    a(href=post.id)  Читать
+                    a(href="/article/" + post.id)  Читать
 
-        a(href="create") Создать
+        a(href="article/form") Создать
