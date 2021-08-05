@@ -1,13 +1,25 @@
 import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
-import { NestExpressApplication } from '@nestjs/platform-express'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+
 import { AppModule } from './app.module';
+// import { ConfigService } from '@nestjs/config';
+
+const options = new DocumentBuilder()
+  .setTitle('OC Auth')
+  .setDescription('Auth microservice 🚀')
+  .setVersion('1.0')
+  // .setBasePath(BASE_URL)
+  .addCookieAuth() // Brier token
+  .build();
 
 async function bootstrap() {
   /*
-  * Добавим параметр типа к методу create, показывая, что мы хотим работать
-  * с объектом app, как с приложением express.
-  */
+   * Добавим параметр типа к методу create, показывая, что мы хотим работать
+   * с объектом app, как с приложением express.
+   */
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   // Сообщим приложению, где искать наши views.
@@ -16,6 +28,27 @@ async function bootstrap() {
   // И укажем, какой шаблонизатор использовать
   app.setViewEngine('pug');
 
+  // привязка ValidationPipe на уровне приложения, чтобы обеспечить защиту всех конечных точек от получения неверных данных.
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+    }),
+  );
+  // app.useGlobalPipes(new PipeTransform());
+
+  const document = SwaggerModule.createDocument(app, options);
+  SwaggerModule.setup('/auth/docs', app, document);
+
   await app.listen(3100);
 }
 bootstrap();
+
+
+/**
+ *  Plan:
+ *    1. Auth
+ *      use JWT with Passport
+ *
+ *      - with Google
+ * */

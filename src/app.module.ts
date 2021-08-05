@@ -2,8 +2,8 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ArticleModule } from './modules/article/article.module'
-import { Article } from './modules/article/models/article.entity'
+import { ArticleModule } from './modules/article/article.module';
+import { Article } from '@entities/article/article.entity';
 
 @Module({
   imports: [
@@ -24,7 +24,7 @@ import { Article } from './modules/article/models/article.entity'
        * схема БД будет приобретать ту форму, которую мы описываем в коде (классы, помеченные @Entity)
        * */
     }),
-    ArticleModule
+    ArticleModule,
   ],
   controllers: [AppController],
   providers: [AppService],
