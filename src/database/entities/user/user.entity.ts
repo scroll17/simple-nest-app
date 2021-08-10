@@ -1,27 +1,40 @@
 import bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
-import { BaseEntity, Column, CreateDateColumn, UpdateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  UpdateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'users', schema: 'public' })
 export class User extends BaseEntity {
-  @PrimaryGeneratedColumn()
+  @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column()
+  @Column('citext', { unique: true })
   email: string;
 
-  @Column()
+  @Column('varchar', { length: 255 })
   @Exclude()
   password: string;
 
-  @Column()
+  @Column('boolean', { default: false })
+  verified: boolean;
+
+  @Column('boolean', { default: false })
+  terms: boolean;
+
+  @Column('citext', { array: true })
   receivers: string[];
 
-  @CreateDateColumn()
-  createdAt: string;
+  @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
+  createdAt: Date;
 
-  @UpdateDateColumn({ type: 'timestamp with time zone' })
-  updatedAt: number;
+  @UpdateDateColumn({ name: 'updated_at', type: 'timestamp with time zone' })
+  updatedAt: Date;
 
   constructor(email: string, password: string, receivers?: string[]) {
     super();
@@ -30,10 +43,13 @@ export class User extends BaseEntity {
     this.receivers = receivers ?? [];
   }
 
-  addReceiver(receiver: string) {
+  addReceiver(receiver: string): boolean {
     if (!this.receivers.find((r) => r === receiver)) {
       this.receivers.push(receiver);
+      return true;
     }
+
+    return false;
   }
 
   async hashPassword(): Promise<void> {
