@@ -37,8 +37,8 @@ async function bootstrap() {
   );
   // app.useGlobalPipes(new PipeTransform());
 
-  const document = SwaggerModule.createDocument(app, options);
-  SwaggerModule.setup('/auth/docs', app, document);
+  // const document = SwaggerModule.createDocument(app, options);
+  // SwaggerModule.setup('/auth/docs', app, document);
 
   await app.listen(3100);
 }

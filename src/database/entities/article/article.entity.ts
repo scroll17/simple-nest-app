@@ -11,9 +11,6 @@ export class Article extends BaseEntity {
   @Column()
   content: string;
 
-  @Column({ name: 'content_type' })
-  contentType: string;
-
   constructor(title: string, content: string, id?: number) {
     super();
     this.id = id;

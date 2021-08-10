@@ -3,20 +3,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ArticleModule } from './modules/article/article.module';
+import { AuthModule } from './modules/auth/auth.module';
 import { Article } from '@entities/article/article.entity';
+import { User } from '@entities/user/user.entity';
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'database',
-      port: 5432,
-      username: 'test',
-      password: 'test',
-      database: 'simple_shop',
-      schema: 'public',
-      entities: [Article],
-      // entities: ["src/modules/**/models/**.entity{.ts,.js}"],
+      url: `postgresql://test:test@database:5432/simple_shop`,
+      entities: [Article, User],
       logging: true,
       synchronize: true,
       /**
@@ -25,6 +21,7 @@ import { Article } from '@entities/article/article.entity';
        * */
     }),
     ArticleModule,
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
