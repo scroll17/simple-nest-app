@@ -1,17 +1,19 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
+    "module": "CommonJS",
     "declaration": true,
     "removeComments": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "allowSyntheticDefaultImports": true,
-    "target": "es2017",
+    "target": "ES2019",
+    "lib": ["es2019"],
     "sourceMap": true,
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
     "skipLibCheck": true,
+    "esModuleInterop": true,
     "paths": {
       "@entities/*": [
         "src/database/entities/*"
@@ -20,5 +22,6 @@
         "src/@custom-types/*"
       ]
     }
-  }
+  },
+  "include": ["./src"]
 }
