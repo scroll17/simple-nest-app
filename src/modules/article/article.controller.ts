@@ -40,6 +40,6 @@ export class ArticleController {
   @Get('/')
   @Render('index')
   async index() {
-    return this.articleService.find();
+    return this.articleService.findAll();
   }
 }

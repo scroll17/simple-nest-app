@@ -1,9 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '@entities/user/user.entity';
+import { classToPlain } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
-  async register(email: string, password: string): Promise<User> {
+  async register(email: string, password: string) {
     const existingUser = await User.findOne({
       where: {
         email,
@@ -24,8 +25,6 @@ export class AuthService {
     await user.hashPassword();
     await user.save();
 
-    console.log('user => ', user);
-
-    return user;
+    return classToPlain(user);
   }
 }

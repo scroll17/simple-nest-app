@@ -21,7 +21,7 @@ export class ArticleService {
     return article;
   }
 
-  async find() {
+  async findAll() {
     return Article.find();
   }
 }
