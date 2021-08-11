@@ -14,10 +14,10 @@ export class User extends BaseEntity {
   @PrimaryGeneratedColumn('uuid')
   id: number;
 
-  @Column('citext', { unique: true })
+  @Column('citext', { nullable: false, unique: true })
   email: string;
 
-  @Column('varchar', { length: 255 })
+  @Column('varchar', { nullable: false, length: 255 })
   @Exclude()
   password: string;
 
@@ -27,7 +27,7 @@ export class User extends BaseEntity {
   @Column('boolean', { default: false })
   terms: boolean;
 
-  @Column('citext', { array: true })
+  @Column('citext', { nullable: false, array: true })
   receivers: string[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
