@@ -4,6 +4,8 @@ import { classToPlain } from 'class-transformer';
 
 @Injectable()
 export class AuthService {
+  constructor() {}
+
   async register(email: string, password: string) {
     const existingUser = await User.findOne({
       where: {
@@ -12,10 +14,7 @@ export class AuthService {
     });
     if (existingUser) {
       throw new HttpException(
-        {
-          status: HttpStatus.FORBIDDEN,
-          error: 'User with email already exist',
-        },
+        'User with email already exist',
         HttpStatus.FORBIDDEN,
       );
     }

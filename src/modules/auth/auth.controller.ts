@@ -1,4 +1,4 @@
-import { Controller, Body, Post, Put } from '@nestjs/common';
+import { Controller, Body, Post, Put, Get } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
 
@@ -11,8 +11,18 @@ export class AuthController {
     return this.authService.register(body.email, body.password);
   }
 
-  @Put('/verify')
-  async verify() {
+  @Post('/login')
+  async login() {
+
+  }
+
+  @Put('/verify-email')
+  async verifyEmail() {
+    return;
+  }
+
+  @Get('/resend-verify-code')
+  async resendVerifyCode() {
     return;
   }
 }
