@@ -20,6 +20,9 @@
       ],
       "@custom-types/*": [
         "src/@custom-types/*"
+      ],
+      "@common": [
+        "src/common/*"
       ]
     }
   },
