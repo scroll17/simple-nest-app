@@ -2,7 +2,7 @@ version: "3"
 services:
   api:
     image: node:14.17.0
-    container_name: simple_shop_api
+    container_name: simple_nest_api
     working_dir: /home/node/simple-shop
     tty: true
     restart: "always"
@@ -12,13 +12,13 @@ services:
     ports:
       - 3100:3100
     volumes:
-      - ./:/home/node/simple-shop
+      - ./:/home/node/simple-nest
     entrypoint: /bin/bash
     command: -s
 
   database:
     image: mdillon/postgis:9.6
-    container_name: simple_shop_database
+    container_name: simple_nest_database
     restart: "always"
     ports:
       - 5442:5432
@@ -29,7 +29,7 @@ services:
 
   redis:
     image: redis:5.0.3-alpine
-    container_name: simple_shop_redis
+    container_name: simple_nest_redis
     ports:
       - 6382:6379
     tty: true
