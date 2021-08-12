@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { APP_FILTER } from '@nestjs/core'
+import { APP_FILTER, APP_GUARD } from '@nestjs/core'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -11,12 +11,17 @@ import { LoggerMiddleware } from '@common/middlewares/logger.middleware';
 import { CatsModule } from './modules/cats/cats.module';
 import { CatsController } from './modules/cats/cats.controller';
 import { AllExceptionsFilter } from "@common/filters/all-exeption.filter";
+import { AuthGuard } from "@common/guards/auth.guard";
 
 @Module({
   imports: [
     {
       provide: APP_FILTER,
       useClass: AllExceptionsFilter,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
     },
     TypeOrmModule.forRoot({
       type: 'postgres',
