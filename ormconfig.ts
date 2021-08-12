@@ -5,7 +5,7 @@ dotenv.config();
 
 export default {
   type: 'postgres',
-  url: process.env.POSTGRES_URI,
+  url: process.env.POSTGRES_URL,
   migrationsTableName: 'migrations',
   migrations: [__dirname + '/database/migrations/*{.ts,.js}'],
   entities: [__dirname + '/database/entities/**/*.entity.ts'],
