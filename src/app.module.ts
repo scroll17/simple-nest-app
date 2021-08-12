@@ -1,15 +1,21 @@
+/*external modules*/
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+/*modules*/
 import { ArticleModule } from './modules/article/article.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { CatsModule } from './modules/cats/cats.module';
+/*services*/
+import { AppService } from './app.service';
+/*controllers*/
+import { AppController } from './app.controller';
+import { CatsController } from './modules/cats/cats.controller';
+/*@entities*/
 import { Article } from '@entities/article/article.entity';
 import { User } from '@entities/user/user.entity';
+/*@common*/
 import { LoggerMiddleware } from '@common/middlewares/logger.middleware';
-import { CatsModule } from './modules/cats/cats.module';
-import { CatsController } from './modules/cats/cats.controller';
 import { AllExceptionsFilter } from '@common/filters/all-exeption.filter';
 import { AuthGuard } from '@common/guards/auth.guard';
 
@@ -39,7 +45,7 @@ import { AuthGuard } from '@common/guards/auth.guard';
     CatsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, UserResolver],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

@@ -1,4 +1,6 @@
+/*external modules*/
 import { Injectable } from '@nestjs/common';
+/*@entities*/
 import { Article } from '@entities/article/article.entity';
 
 @Injectable()

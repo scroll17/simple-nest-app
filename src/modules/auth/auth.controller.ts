@@ -1,3 +1,4 @@
+/*external modules*/
 import {
   Body,
   Controller,
@@ -7,8 +8,11 @@ import {
   UseFilters,
   UseGuards,
 } from '@nestjs/common';
+/*services*/
 import { AuthService } from './auth.service';
+/*dto*/
 import { RegisterUserDto } from './dto/register-user.dto';
+/*@common*/
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { RolesGuard } from '@common/guards/roles.guard';
 

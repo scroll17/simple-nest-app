@@ -1,13 +1,20 @@
+/*external modules*/
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { User } from '@entities/user/user.entity';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 import { classToPlain } from 'class-transformer';
+/*@entities*/
+import { User } from '@entities/user/user.entity';
 
 @Injectable()
 export class AuthService {
-  constructor() {}
+  constructor(
+    @InjectRepository(User)
+    private usersRepository: Repository<User>,
+  ) {}
 
   async register(email: string, password: string) {
-    const existingUser = await User.findOne({
+    const existingUser = await this.usersRepository.findOne({
       where: {
         email,
       },

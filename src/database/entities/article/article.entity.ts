@@ -1,3 +1,4 @@
+/*external modules*/
 import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'articles', schema: 'public' })

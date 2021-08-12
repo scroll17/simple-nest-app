@@ -1,11 +1,12 @@
+/*external modules*/
 import { join } from 'path';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-
-import { AppModule } from './app.module';
 // import { ConfigService } from '@nestjs/config';
+/*modules*/
+import { AppModule } from './app.module';
 
 const options = new DocumentBuilder()
   .setTitle('OC Auth')

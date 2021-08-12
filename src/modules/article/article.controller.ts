@@ -1,3 +1,4 @@
+/*external modules*/
 import {
   Controller,
   Render,
@@ -9,7 +10,9 @@ import {
   Post,
   Redirect,
 } from '@nestjs/common';
+/*services*/
 import { ArticleService } from './article.service';
+/*dto*/
 import { CreateArticleDto } from './dto/create-article.dto';
 
 @Controller('/article')

@@ -1,6 +1,9 @@
+/*external modules*/
 import { Module } from '@nestjs/common';
-import { ArticleController } from './article.controller';
+/*services*/
 import { ArticleService } from './article.service';
+/*controllers*/
+import { ArticleController } from './article.controller';
 
 @Module({
   imports: [],
