@@ -2,12 +2,12 @@
 import {
   Body,
   Controller,
-  Get,
+  Get, ParseIntPipe,
   Post,
   Put,
   UseFilters,
-  UseGuards,
-} from '@nestjs/common';
+  UseGuards
+} from "@nestjs/common";
 /*services*/
 import { AuthService } from './auth.service';
 /*dto*/
@@ -31,7 +31,9 @@ export class AuthController {
   async login() {}
 
   @Put('/verify-email')
-  async verifyEmail() {
+  async verifyEmail(@Body('code', ParseIntPipe) code: number) {
+    await this.authService.checkVerificationCode('test@gmail.com', code);
+
     return;
   }
 

@@ -3,10 +3,11 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 /*modules*/
-import { UserModule } from "./modules/user/user.module";
+import { UserModule } from './modules/user/user.module';
 import { ArticleModule } from './modules/article/article.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatsModule } from './modules/cats/cats.module';
+import { RedisModule } from "./modules/redis/redis.module";
 /*services*/
 import { AppService } from './app.service';
 /*controllers*/
@@ -22,14 +23,14 @@ import { AuthGuard } from '@common/guards/auth.guard';
 
 @Module({
   imports: [
-    {
-      provide: APP_FILTER,
-      useClass: AllExceptionsFilter,
-    },
-    {
-      provide: APP_GUARD,
-      useClass: AuthGuard,
-    },
+    // {
+    //   provide: APP_FILTER,
+    //   useClass: AllExceptionsFilter,
+    // },
+    // {
+    //   provide: APP_GUARD,
+    //   useClass: AuthGuard,
+    // },
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: `postgresql://test:test@database:5432/simple_shop`,
