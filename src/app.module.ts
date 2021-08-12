@@ -1,4 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
+import { APP_FILTER } from '@nestjs/core'
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -6,12 +7,17 @@ import { ArticleModule } from './modules/article/article.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { Article } from '@entities/article/article.entity';
 import { User } from '@entities/user/user.entity';
-import { LoggerMiddleware } from './common/middleware/logger.middleware';
+import { LoggerMiddleware } from '@common/middlewares/logger.middleware';
 import { CatsModule } from './modules/cats/cats.module';
 import { CatsController } from './modules/cats/cats.controller';
+import { AllExceptionsFilter } from "@common/filters/all-exeption.filter";
 
 @Module({
   imports: [
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionsFilter,
+    },
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: `postgresql://test:test@database:5432/simple_shop`,

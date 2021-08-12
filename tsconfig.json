@@ -21,7 +21,7 @@
       "@custom-types/*": [
         "src/@custom-types/*"
       ],
-      "@common": [
+      "@common/*": [
         "src/common/*"
       ]
     }
