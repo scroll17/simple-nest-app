@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core'
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,8 +10,8 @@ import { User } from '@entities/user/user.entity';
 import { LoggerMiddleware } from '@common/middlewares/logger.middleware';
 import { CatsModule } from './modules/cats/cats.module';
 import { CatsController } from './modules/cats/cats.controller';
-import { AllExceptionsFilter } from "@common/filters/all-exeption.filter";
-import { AuthGuard } from "@common/guards/auth.guard";
+import { AllExceptionsFilter } from '@common/filters/all-exeption.filter';
+import { AuthGuard } from '@common/guards/auth.guard';
 
 @Module({
   imports: [
@@ -43,8 +43,6 @@ import { AuthGuard } from "@common/guards/auth.guard";
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer
-      .apply(LoggerMiddleware)
-      .forRoutes(CatsController);
+    consumer.apply(LoggerMiddleware).forRoutes(CatsController);
   }
 }

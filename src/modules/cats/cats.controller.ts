@@ -5,14 +5,15 @@ import {
   Body,
   Patch,
   Param,
-  Delete, UseInterceptors
-} from "@nestjs/common";
+  Delete,
+  UseInterceptors,
+} from '@nestjs/common';
 import { CatsService } from './cats.service';
 import { CreateCatDto } from './dto/create-cat.dto';
 import { UpdateCatDto } from './dto/update-cat.dto';
 import { Roles } from '@common/decorators/roles.decorator';
-import { LoggingInterceptor } from "@common/interceptors/logging.interceptor";
-import { TransformInterceptor } from "@common/interceptors/transform.interceptor";
+import { LoggingInterceptor } from '@common/interceptors/logging.interceptor';
+import { TransformInterceptor } from '@common/interceptors/transform.interceptor';
 
 @Controller('cats')
 @UseInterceptors(LoggingInterceptor)
