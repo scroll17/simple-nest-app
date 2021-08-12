@@ -1,8 +1,10 @@
-import { Controller, Body, Post, Put, Get } from '@nestjs/common';
+import { Body, Controller, Get, Post, Put, UseFilters } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterUserDto } from './dto/register-user.dto';
+import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 
 @Controller('/auth')
+@UseFilters(new HttpExceptionFilter())
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
@@ -12,9 +14,7 @@ export class AuthController {
   }
 
   @Post('/login')
-  async login() {
-
-  }
+  async login() {}
 
   @Put('/verify-email')
   async verifyEmail() {
