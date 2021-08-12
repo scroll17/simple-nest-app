@@ -3,6 +3,7 @@ import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
 import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
 /*modules*/
+import { UserModule } from "./modules/user/user.module";
 import { ArticleModule } from './modules/article/article.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatsModule } from './modules/cats/cats.module';
@@ -40,12 +41,13 @@ import { AuthGuard } from '@common/guards/auth.guard';
        * схема БД будет приобретать ту форму, которую мы описываем в коде (классы, помеченные @Entity)
        * */
     }),
+    UserModule,
     ArticleModule,
     AuthModule,
     CatsModule,
   ],
   controllers: [AppController],
-  providers: [AppService, UserResolver],
+  providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

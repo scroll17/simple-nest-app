@@ -9,7 +9,11 @@ import { UserController } from './user.controller';
 import { User } from '@entities/user/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User])],
+  imports: [
+    // method to define which repositories are registered in the current scope
+    // after using the @InjectRepository() for inject the UsersRepository
+    TypeOrmModule.forFeature([User]),
+  ],
   controllers: [UserController],
   providers: [UserService],
   exports: [TypeOrmModule],
