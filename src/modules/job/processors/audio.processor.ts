@@ -1,4 +1,11 @@
-import { Processor, Process, OnQueueActive, OnQueueProgress, OnQueueFailed, BullModule } from "@nestjs/bull";
+import {
+  Processor,
+  Process,
+  OnQueueActive,
+  OnQueueProgress,
+  OnQueueFailed,
+  BullModule,
+} from '@nestjs/bull';
 import { Job } from 'bull';
 
 export const audioProcessorName = 'audio' as const;
@@ -31,9 +38,6 @@ export class AudioConsumer {
 
   @OnQueueFailed()
   onFail(job: Job, err: Error) {
-    console.log(
-      `Job ${job.id} of type ${job.name} failed with error`,
-      err
-    );
+    console.log(`Job ${job.id} of type ${job.name} failed with error`, err);
   }
 }

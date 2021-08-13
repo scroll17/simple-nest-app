@@ -1,7 +1,7 @@
 /*external modules*/
-import { Injectable, OnModuleDestroy, OnModuleInit } from "@nestjs/common";
-import Redis from "ioredis";
-import dotenv from "dotenv";
+import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import Redis from 'ioredis';
+import dotenv from 'dotenv';
 
 dotenv.config();
 

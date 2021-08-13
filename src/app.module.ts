@@ -7,8 +7,8 @@ import { UserModule } from './modules/user/user.module';
 import { ArticleModule } from './modules/article/article.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatsModule } from './modules/cats/cats.module';
-import { RedisModule } from "./modules/redis/redis.module";
-import { JobModule } from "./modules/job/job.module";
+import { RedisModule } from './modules/redis/redis.module';
+import { JobModule } from './modules/job/job.module';
 /*services*/
 import { AppService } from './app.service';
 /*controllers*/

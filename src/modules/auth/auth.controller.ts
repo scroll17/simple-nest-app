@@ -2,12 +2,13 @@
 import {
   Body,
   Controller,
-  Get, ParseIntPipe,
+  Get,
+  ParseIntPipe,
   Post,
   Put,
   UseFilters,
-  UseGuards
-} from "@nestjs/common";
+  UseGuards,
+} from '@nestjs/common';
 /*services*/
 import { AuthService } from './auth.service';
 /*dto*/
