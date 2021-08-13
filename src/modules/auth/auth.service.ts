@@ -24,6 +24,23 @@ export class AuthService {
     private audioQueue: Queue,
   ) {}
 
+  async validateUser(email: string, pass: string): Promise<any> {
+    const user = await this.usersRepository.findOne({
+      where: {
+        email,
+      },
+    });
+
+    if (user) {
+      const isValidPassword = await user.comparePassword(pass);
+      if(!isValidPassword) return;
+
+      return classToPlain(user);
+    }
+
+    return null;
+  }
+
   async register(email: string, password: string) {
     const existingUser = await this.usersRepository.findOne({
       where: {

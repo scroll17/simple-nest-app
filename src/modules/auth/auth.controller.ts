@@ -1,6 +1,7 @@
 /*external modules*/
 import {
   Body,
+  Req,
   Controller,
   Get,
   ParseIntPipe,
@@ -16,6 +17,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 /*@common*/
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { RolesGuard } from '@common/guards/roles.guard';
+import { LocalAuthGuard } from "@common/guards/local-auth.guard";
 
 @Controller('/auth')
 @UseGuards(RolesGuard)
@@ -29,7 +31,10 @@ export class AuthController {
   }
 
   @Post('/login')
-  async login() {}
+  @UseGuards(LocalAuthGuard)
+  async login(@Req() req) {
+    return req.user;
+  }
 
   @Put('/verify-email')
   async verifyEmail(@Body('code', ParseIntPipe) code: number) {
