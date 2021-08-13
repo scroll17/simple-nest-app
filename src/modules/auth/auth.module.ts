@@ -1,7 +1,6 @@
 /*external modules*/
 import { Module } from '@nestjs/common';
 /*modules*/
-import { RedisModule } from "../redis/redis.module";
 import { UserModule } from '../user/user.module';
 /*services*/
 import { AuthService } from './auth.service';
@@ -9,7 +8,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 
 @Module({
-  imports: [RedisModule, UserModule],
+  imports: [UserModule],
   providers: [AuthService],
   controllers: [AuthController],
 })

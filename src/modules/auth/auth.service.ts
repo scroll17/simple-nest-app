@@ -1,8 +1,10 @@
 /*external modules*/
-import { HttpException, HttpStatus, Inject, Injectable } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Connection, Repository } from "typeorm";
 import { classToPlain } from 'class-transformer';
+import { InjectQueue } from '@nestjs/bull';
+import { Queue } from "bull";
 /*services*/
 import { RedisService } from "../redis/redis.service";
 /*@entities*/
@@ -15,6 +17,7 @@ export class AuthService {
     private usersRepository: Repository<User>,
     private connection: Connection,
     private redisService: RedisService,
+    @InjectQueue('audio') private audioQueue: Queue,
   ) {}
 
   async register(email: string, password: string) {
@@ -70,6 +73,8 @@ export class AuthService {
 
     codeInRedis = await client.get(email);
     console.log('codeInRedis => ', codeInRedis)
+
+    await this.audioQueue.add({ data: 'hello world' });
 
     return true
   }

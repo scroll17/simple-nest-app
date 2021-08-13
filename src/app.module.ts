@@ -8,6 +8,7 @@ import { ArticleModule } from './modules/article/article.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { CatsModule } from './modules/cats/cats.module';
 import { RedisModule } from "./modules/redis/redis.module";
+import { JobModule } from "./modules/job/job.module";
 /*services*/
 import { AppService } from './app.service';
 /*controllers*/
@@ -42,6 +43,8 @@ import { AuthGuard } from '@common/guards/auth.guard';
        * схема БД будет приобретать ту форму, которую мы описываем в коде (классы, помеченные @Entity)
        * */
     }),
+    RedisModule,
+    JobModule,
     UserModule,
     ArticleModule,
     AuthModule,

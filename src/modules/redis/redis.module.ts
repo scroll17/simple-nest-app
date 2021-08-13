@@ -1,10 +1,11 @@
 /*external modules*/
-import { Module } from '@nestjs/common';
+import { Global, Module } from "@nestjs/common";
 /*services*/
 import { RedisService } from './redis.service';
 /*controllers*/
 /*@entities*/
 
+@Global()
 @Module({
   providers: [RedisService],
   exports: [RedisService],
