@@ -1,17 +1,29 @@
 /*external modules*/
 import { Injectable } from '@nestjs/common';
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
 /*@entities*/
 import { Article } from '@entities/article/article.entity';
 
 @Injectable()
 export class ArticleService {
+  constructor(
+    @InjectRepository(Article)
+    private articleRepository: Repository<Article>,
+  ) {
+  }
+
   async create(title: string, content: string) {
-    const article = new Article(title, content);
+    const article = this.articleRepository.create({
+      title,
+      content
+    });
+
     await article.save();
   }
 
   async findById(id: number, nextId?: string) {
-    const article = await Article.findOne(id);
+    const article = await this.articleRepository.findOne(id);
 
     if (article) {
       return {
@@ -24,6 +36,6 @@ export class ArticleService {
   }
 
   async findAll() {
-    return Article.find();
+    return this.articleRepository.find();
   }
 }
