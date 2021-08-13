@@ -1,9 +1,6 @@
 /*external modules*/
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
 import Redis from 'ioredis';
-import dotenv from 'dotenv';
-
-dotenv.config();
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
