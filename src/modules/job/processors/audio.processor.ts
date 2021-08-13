@@ -4,14 +4,16 @@ import {
   OnQueueActive,
   OnQueueProgress,
   OnQueueFailed,
-  BullModule,
 } from '@nestjs/bull';
 import { Job } from 'bull';
+import { Logger } from "@nestjs/common";
 
 export const audioProcessorName = 'audio' as const;
 
 @Processor(audioProcessorName)
 export class AudioConsumer {
+  private readonly logger = new Logger(this.constructor.name);
+
   @Process()
   async transcode(job: Job<unknown>) {
     let progress = 0;
@@ -24,20 +26,20 @@ export class AudioConsumer {
 
   @OnQueueActive()
   onActive(job: Job) {
-    console.log(
+    this.logger.debug(
       `Processing job ${job.id} of type ${job.name} with data ${job.data}...`,
     );
   }
 
   @OnQueueProgress()
   onProgress(job: Job, progress: number) {
-    console.log(
+    this.logger.debug(
       `Processing job ${job.id} of type ${job.name}: progress - ${progress}`,
     );
   }
 
   @OnQueueFailed()
   onFail(job: Job, err: Error) {
-    console.log(`Job ${job.id} of type ${job.name} failed with error`, err);
+    this.logger.debug(`Job ${job.id} of type ${job.name} failed with error`, err);
   }
 }
