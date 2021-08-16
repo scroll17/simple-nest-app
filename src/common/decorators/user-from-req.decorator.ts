@@ -1,9 +1,9 @@
 /*external modules*/
 import { createParamDecorator } from '@nestjs/common';
 /*@entities*/
-import type { User as TUser } from "@entities/user";
+import type { User } from "@entities/user";
 
-export const User = createParamDecorator<keyof TUser>(
+export const UserFromReq = createParamDecorator<keyof User>(
   (data, ctx) => {
     const request = ctx.switchToHttp().getRequest();
     const user = request.user;
