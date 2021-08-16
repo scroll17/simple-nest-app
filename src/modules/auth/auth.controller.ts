@@ -1,6 +1,7 @@
 /*external modules*/
 import {
   Body,
+  Req,
   Controller,
   Get,
   ParseIntPipe,
@@ -16,7 +17,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 /*@common*/
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { RolesGuard } from '@common/guards/roles.guard';
-import { LocalAuthGuard, JwtAuthGuard } from '@common/guards';
+import { LocalAuthGuard, JwtAuthGuard, GoogleAuthGuard } from '@common/guards';
 import { UserFromReq } from '@common/decorators';
 /*@entities*/
 import { User } from '@entities/user';
@@ -36,6 +37,16 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   async login(@UserFromReq() user: User) {
     return this.authService.login(user);
+  }
+
+  @Get('/google')
+  @UseGuards(GoogleAuthGuard)
+  async googleInit() {}
+
+  @Get('/google/callback')
+  @UseGuards(GoogleAuthGuard)
+  async googleLogin(@Req() req) {
+    return this.authService.googleLogin(req.user);
   }
 
   @Put('/verify-email')

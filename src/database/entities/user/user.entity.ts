@@ -18,9 +18,12 @@ export class User extends BaseEntity {
   @Column('citext', { nullable: false, unique: true })
   email: string;
 
-  @Column('varchar', { nullable: false, length: 255 })
+  @Column('varchar', { nullable: true, length: 255, default: null })
   @Exclude()
   password: string;
+
+  @Column('varchar', { default: null, length: 100 })
+  googleId: string;
 
   @Column('boolean', { default: false })
   verified: boolean;
@@ -37,7 +40,7 @@ export class User extends BaseEntity {
   @UpdateDateColumn({ name: 'updated_at', type: 'timestamp with time zone' })
   updatedAt: Date;
 
-  constructor(email: string, password: string, receivers?: string[]) {
+  constructor(email: string, password?: string, receivers?: string[]) {
     super();
     this.email = email;
     this.password = password;
