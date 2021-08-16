@@ -1,6 +1,8 @@
+import dotenv from 'dotenv';
+dotenv.config();
+
 /*external modules*/
 import { join } from 'path';
-import dotenv from 'dotenv';
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 import { ValidationPipe } from '@nestjs/common';
@@ -8,9 +10,6 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 // import { ConfigService } from '@nestjs/config';
 /*modules*/
 import { AppModule } from './app.module';
-
-
-dotenv.config();
 
 const options = new DocumentBuilder()
   .setTitle('OC Auth')

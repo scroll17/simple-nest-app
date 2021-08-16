@@ -17,7 +17,10 @@ import { RegisterUserDto } from './dto/register-user.dto';
 /*@common*/
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { RolesGuard } from '@common/guards/roles.guard';
-import { LocalAuthGuard } from "@common/guards/local-auth.guard";
+import { LocalAuthGuard, JwtAuthGuard } from "@common/guards";
+import { UserFromReq } from "@common/decorators";
+/*@entities*/
+import { User } from "@entities/user";
 
 @Controller('/auth')
 @UseGuards(RolesGuard)
@@ -32,11 +35,12 @@ export class AuthController {
 
   @Post('/login')
   @UseGuards(LocalAuthGuard)
-  async login(@Req() req) {
-    return req.user;
+  async login(@UserFromReq() user: User) {
+    return this.authService.login(user);
   }
 
   @Put('/verify-email')
+  @UseGuards(JwtAuthGuard)
   async verifyEmail(@Body('code', ParseIntPipe) code: number) {
     await this.authService.checkVerificationCode('test@gmail.com', code);
 
@@ -44,6 +48,7 @@ export class AuthController {
   }
 
   @Get('/resend-verify-code')
+  @UseGuards(JwtAuthGuard)
   async resendVerifyCode() {
     return;
   }

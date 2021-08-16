@@ -1,14 +1,17 @@
 /*external modules*/
 import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
 import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { InjectQueue } from '@nestjs/bull';
 import { Connection, Repository } from 'typeorm';
 import { classToPlain } from 'class-transformer';
-import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 /*services*/
 import { RedisService } from '../redis/redis.service';
 /*@entities*/
 import { User } from '@entities/user/user.entity';
+/*@interfaces*/
+import { IPlainUser } from '@interfaces/user';
 
 @Injectable()
 export class AuthService {
@@ -17,6 +20,7 @@ export class AuthService {
   constructor(
     private connection: Connection,
     private redisService: RedisService,
+    private jwtService: JwtService,
 
     @InjectRepository(User)
     private usersRepository: Repository<User>,
@@ -24,24 +28,21 @@ export class AuthService {
     private audioQueue: Queue,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser(email: string, pass: string): Promise<IPlainUser | undefined> {
     const user = await this.usersRepository.findOne({
       where: {
         email,
       },
     });
+    if (!user) return;
 
-    if (user) {
-      const isValidPassword = await user.comparePassword(pass);
-      if(!isValidPassword) return;
+    const isValidPassword = await user.comparePassword(pass);
+    if(!isValidPassword) return;
 
-      return classToPlain(user);
-    }
-
-    return null;
+    return classToPlain(user) as IPlainUser;
   }
 
-  async register(email: string, password: string) {
+  async register(email: string, password: string): Promise<{ user: IPlainUser; accessToken: string; }> {
     const existingUser = await this.usersRepository.findOne({
       where: {
         email,
@@ -59,10 +60,25 @@ export class AuthService {
     await user.hashPassword();
     await user.save();
 
-    return classToPlain(user);
+    return {
+      user: classToPlain(user) as IPlainUser,
+      accessToken: this.jwtService.sign({
+        email: user.email,
+        sub: user.id,
+      }),
+    };
   }
 
-  async login() {
+  async login(user: User): Promise<{ accessToken: string }> {
+    // property name of sub need for hold our userId value to be consistent with JWT standards.
+    const payload = { email: user.email, sub: user.id };
+
+    return {
+      accessToken: this.jwtService.sign(payload),
+    };
+  }
+
+  async login2() {
     const queryRunner = this.connection.createQueryRunner();
 
     await queryRunner.connect();
