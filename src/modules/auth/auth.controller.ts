@@ -1,7 +1,6 @@
 /*external modules*/
 import {
   Body,
-  Req,
   Controller,
   Get,
   ParseIntPipe,
@@ -17,10 +16,10 @@ import { RegisterUserDto } from './dto/register-user.dto';
 /*@common*/
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { RolesGuard } from '@common/guards/roles.guard';
-import { LocalAuthGuard, JwtAuthGuard } from "@common/guards";
-import { UserFromReq } from "@common/decorators";
+import { LocalAuthGuard, JwtAuthGuard } from '@common/guards';
+import { UserFromReq } from '@common/decorators';
 /*@entities*/
-import { User } from "@entities/user";
+import { User } from '@entities/user';
 
 @Controller('/auth')
 @UseGuards(RolesGuard)

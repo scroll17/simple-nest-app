@@ -1,5 +1,5 @@
 /*external modules*/
-import { HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import { HttpException, HttpStatus, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { JwtService } from '@nestjs/jwt';
 import { InjectQueue } from '@nestjs/bull';
@@ -15,7 +15,7 @@ import { IPlainUser } from '@interfaces/user';
 
 @Injectable()
 export class AuthService {
-  private readonly logger = new Logger(this.constructor.name)
+  private readonly logger = new Logger(this.constructor.name);
 
   constructor(
     private connection: Connection,
@@ -28,7 +28,10 @@ export class AuthService {
     private audioQueue: Queue,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<IPlainUser | undefined> {
+  async validateUser(
+    email: string,
+    pass: string,
+  ): Promise<IPlainUser | undefined> {
     const user = await this.usersRepository.findOne({
       where: {
         email,
@@ -37,12 +40,15 @@ export class AuthService {
     if (!user) return;
 
     const isValidPassword = await user.comparePassword(pass);
-    if(!isValidPassword) return;
+    if (!isValidPassword) return;
 
     return classToPlain(user) as IPlainUser;
   }
 
-  async register(email: string, password: string): Promise<{ user: IPlainUser; accessToken: string; }> {
+  async register(
+    email: string,
+    password: string,
+  ): Promise<{ user: IPlainUser; accessToken: string }> {
     const existingUser = await this.usersRepository.findOne({
       where: {
         email,

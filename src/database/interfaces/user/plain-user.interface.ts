@@ -1,3 +1,3 @@
-import { User } from '@entities/user'
+import { User } from '@entities/user';
 
-export interface IPlainUser extends Omit<User, 'password'> {}
+export type IPlainUser = Omit<User, 'password'>;

@@ -1,7 +1,7 @@
 /*external modules*/
 import { Injectable } from '@nestjs/common';
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 /*@entities*/
 import { Article } from '@entities/article/article.entity';
 
@@ -10,13 +10,12 @@ export class ArticleService {
   constructor(
     @InjectRepository(Article)
     private articleRepository: Repository<Article>,
-  ) {
-  }
+  ) {}
 
   async create(title: string, content: string) {
     const article = this.articleRepository.create({
       title,
-      content
+      content,
     });
 
     await article.save();

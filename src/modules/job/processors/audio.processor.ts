@@ -6,7 +6,7 @@ import {
   OnQueueFailed,
 } from '@nestjs/bull';
 import { Job } from 'bull';
-import { Logger } from "@nestjs/common";
+import { Logger } from '@nestjs/common';
 
 export const audioProcessorName = 'audio' as const;
 
@@ -40,6 +40,9 @@ export class AudioConsumer {
 
   @OnQueueFailed()
   onFail(job: Job, err: Error) {
-    this.logger.debug(`Job ${job.id} of type ${job.name} failed with error`, err);
+    this.logger.debug(
+      `Job ${job.id} of type ${job.name} failed with error`,
+      err,
+    );
   }
 }

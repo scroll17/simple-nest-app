@@ -6,8 +6,6 @@ import Redis from 'ioredis';
 export class RedisService implements OnModuleInit, OnModuleDestroy {
   private connection: Redis.Redis;
 
-  constructor() {}
-
   async onModuleInit() {
     this.createConnection();
   }
