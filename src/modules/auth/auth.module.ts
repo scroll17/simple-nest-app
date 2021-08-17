@@ -1,5 +1,5 @@
 /*external modules*/
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from "@nestjs/common";
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 /*modules*/
@@ -15,12 +15,12 @@ import { GoogleStrategy } from "./strategies/google.strategy";
 
 @Module({
   imports: [
-    UserModule,
+    forwardRef(() => UserModule),
     PassportModule,
     JwtModule.register({
       secret: process.env.JWT_SECRET,
       signOptions: {
-        expiresIn: '60s',
+        expiresIn: '60m',
       },
     }),
   ],
