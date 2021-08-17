@@ -56,6 +56,17 @@ export class User extends BaseEntity {
     return false;
   }
 
+  addReceivers(receivers: string[]): boolean {
+    let someAdded = false;
+
+    receivers.forEach((receiver) => {
+      const result = this.addReceiver(receiver);
+      if (!someAdded) someAdded = result;
+    });
+
+    return someAdded;
+  }
+
   async hashPassword(): Promise<void> {
     if (this.password) {
       this.password = await bcrypt.hash(this.password, 10);
