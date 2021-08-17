@@ -18,7 +18,7 @@ import { RedisService } from '../redis/redis.service';
 /*@entities*/
 import { User } from '@entities/user/user.entity';
 /*@interfaces*/
-import { IPlainUser, IUserDataInGoogle } from "@interfaces/user";
+import { IPlainUser, IUserDataInGoogle } from "../../interfaces/user";
 
 @Injectable()
 export class AuthService {

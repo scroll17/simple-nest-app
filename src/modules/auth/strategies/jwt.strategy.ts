@@ -5,7 +5,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 /*@interfaces*/
-import { IUserDataInJwt } from '@interfaces/user';
+import { IUserDataInJwt } from '../../../interfaces/user';
 /*@entities*/
 import { User } from '@entities/user';
 
