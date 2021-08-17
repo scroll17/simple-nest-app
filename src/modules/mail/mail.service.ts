@@ -1,14 +1,20 @@
 /*external modules*/
-import path from 'path';
-import fs from 'fs';
-import mjml from 'mjml';
-import { Injectable, Logger } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import ejs, { TemplateFunction } from 'ejs';
+import path from "path";
+import fs from "fs";
+import mjml from "mjml";
+import _ from "lodash";
+import { Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { Repository } from "typeorm";
+import ejs, { TemplateFunction } from "ejs";
+import { InjectQueue } from "@nestjs/bull";
+import { Queue } from "bull";
 /*services*/
+/*dto*/
+import { SendEmailDto } from "./dto/send-email.dto";
 /*@entities*/
-import { User } from '@entities/user';
+import { User } from "@entities/user";
+
 /*@interfaces*/
 
 @Injectable()
@@ -19,6 +25,8 @@ export class MailService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    @InjectQueue('send-email')
+    private sendEmailQueue: Queue,
   ) {}
 
   public async lookup(
@@ -42,5 +50,21 @@ export class MailService {
     return ejs.compile(template.html)(data);
   }
 
-  public async send() {}
+  public async send(user: User, data: SendEmailDto) {
+    const newReceiversAdded = user.addReceivers(data.receivers);
+    if(newReceiversAdded) await user.save();
+
+    await this.sendEmailQueue.add({
+      to: _.uniq(data.receivers),
+      fromEmail: user.email,
+      template: 'user-send-email',
+      subject: data.subject,
+      locals: {
+        message: data.message,
+        fromEmail: user.email,
+      },
+    })
+
+    return true;
+  }
 }

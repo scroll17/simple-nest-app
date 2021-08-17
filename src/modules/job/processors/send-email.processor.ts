@@ -1,4 +1,5 @@
 /*external modules*/
+import _ from 'lodash'
 import { Processor, Process, OnQueueFailed } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
@@ -12,6 +13,8 @@ import { EmailTemplate } from '../../mail/templates';
 export type SendEmailOptions = EmailTemplate;
 
 export const sendEmailProcessorName = 'send-email' as const;
+
+const isDev = process.env.ENV_NAME === 'dev';
 
 const EMAIL_DEBUG = process.env.EMAIL_DEBUG === 'true';
 const FROM_EMAIL = process.env.FROM_EMAIL;
@@ -38,10 +41,18 @@ export class SendEmailConsumer {
   async sendEmail(job: Job<SendEmailOptions>) {
     this.logger.debug(
       `Sending email "${job.data.subject}" to "${job.data.to}"`,
+      job.data,
     );
 
-    if (!job.data.to.includes('@')) {
-      this.logger.warn(`User "to" email doesn't have final @domain`, job.data);
+    const someToEmailInvalid = _.some(
+      Array.isArray(job.data.to) ? job.data.to : [job.data.to],
+      (toEmail) => !toEmail.includes('@')
+    )
+    if(someToEmailInvalid) {
+      this.logger.warn(
+        `User "to" email doesn't have final @domain`,
+        job.data,
+      );
       return;
     }
 
@@ -62,8 +73,19 @@ export class SendEmailConsumer {
       currentYear: new Date().getFullYear(),
     });
 
+    /**
+     *  https://docs.aws.amazon.com/console/ses/sandbox
+     *  When SES account is in "sandbox" mode:
+     *    - Only send from verified domains and email addressed
+     *    - Only send to verified domains and email addresses
+     * */
+    const from = `MoodMeter <${
+      !isDev && job.data.fromEmail
+        ? job.data.fromEmail
+        : EMAIL_DEBUG || FROM_EMAIL
+    }>`;
     const mailOption: SendMailOptions = {
-      from: `MoodMeter <${job.data.fromEmail ?? (EMAIL_DEBUG || FROM_EMAIL)}>`,
+      from: from,
       to: job.data.to,
       subject: job.data.subject,
       html: html,
@@ -74,7 +96,8 @@ export class SendEmailConsumer {
     }
 
     if (typeof EMAIL_DEBUG === 'boolean' && EMAIL_DEBUG) {
-      return this.logger.debug(`Debug email`, job.data);
+      this.logger.debug(`Debug email`);
+      return;
     }
 
     const transporter = nodemailer.createTransport(this.SESTransport);

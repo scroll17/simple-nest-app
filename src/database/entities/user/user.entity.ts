@@ -1,4 +1,5 @@
 /*external modules*/
+import _ from 'lodash';
 import bcrypt from 'bcrypt';
 import { Exclude } from 'class-transformer';
 import {
@@ -31,7 +32,7 @@ export class User extends BaseEntity {
   @Column('boolean', { default: false })
   terms: boolean;
 
-  @Column('citext', { nullable: false, array: true })
+  @Column('simple-array', { nullable: false })
   receivers: string[];
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp with time zone' })
@@ -47,24 +48,13 @@ export class User extends BaseEntity {
     this.receivers = receivers ?? [];
   }
 
-  addReceiver(receiver: string): boolean {
-    if (!this.receivers.find((r) => r === receiver)) {
-      this.receivers.push(receiver);
-      return true;
+  addReceivers(receivers: string[]): boolean {
+    const diff = _.difference(receivers, this.receivers);
+    if(!_.isEmpty(diff)) {
+      this.receivers.push(...diff);
     }
 
-    return false;
-  }
-
-  addReceivers(receivers: string[]): boolean {
-    let someAdded = false;
-
-    receivers.forEach((receiver) => {
-      const result = this.addReceiver(receiver);
-      if (!someAdded) someAdded = result;
-    });
-
-    return someAdded;
+    return diff.length > 0;
   }
 
   async hashPassword(): Promise<void> {

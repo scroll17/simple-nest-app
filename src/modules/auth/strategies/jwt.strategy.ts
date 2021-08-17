@@ -5,7 +5,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 /*@interfaces*/
-import { IUserDataInJwt } from '../../../common/interfaces/user';
+import { IUserDataInJwt } from "@common/interfaces/user";
 /*@entities*/
 import { User } from '@entities/user';
 
@@ -23,7 +23,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: IUserDataInJwt): Promise<User> {
     const user = await this.usersRepository.findOne(payload.sub);
-    if (!user) throw new NotFoundException('user not found');
+    if (!user) throw new NotFoundException('User not found');
 
     return user;
   }
