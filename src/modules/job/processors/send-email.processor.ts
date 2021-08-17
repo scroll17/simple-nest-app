@@ -17,7 +17,7 @@ export type SendEmailOptions = EmailTemplate;
 
 export const sendEmailProcessorName = 'send-email' as const;
 
-const EMAIL_DEBUG = Boolean(process.env.EMAIL_DEBUG);
+const EMAIL_DEBUG = process.env.EMAIL_DEBUG === 'true';
 const FROM_EMAIL = process.env.FROM_EMAIL;
 const REPLY_TO_DOMAIN = process.env.REPLY_TO_DOMAIN;
 
@@ -47,7 +47,7 @@ export class SendEmailConsumer {
       return;
     }
 
-    if(!job.data.fromEmail.includes('@')) {
+    if(job.data.fromEmail && !job.data.fromEmail.includes('@')) {
       this.logger.warn(`User "from" email doesn't have final @domain`, job.data);
       return;
     }
@@ -69,9 +69,7 @@ export class SendEmailConsumer {
     };
 
     if (job.data.replyTo) {
-      mailOption[
-        'replyTo'
-      ] = `${job.data.replyTo}@${REPLY_TO_DOMAIN}`;
+      mailOption['replyTo'] = `${job.data.replyTo}@${REPLY_TO_DOMAIN}`;
     }
 
     if (typeof EMAIL_DEBUG === 'boolean' && EMAIL_DEBUG) {
@@ -91,8 +89,8 @@ export class SendEmailConsumer {
 
   @OnQueueFailed()
   onFail(job: Job, err: Error) {
-    this.logger.debug(
-      `Job ${job.id} of type ${job.name} failed with error`,
+    this.logger.error(
+      `Job ${job.id} of type "${sendEmailProcessorName}" failed with error`,
       err,
     );
   }
