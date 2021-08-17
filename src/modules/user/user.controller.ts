@@ -1,12 +1,12 @@
 /*external modules*/
-import { Controller, Post, UseGuards } from "@nestjs/common";
+import { Controller, Post, UseGuards } from '@nestjs/common';
 /*services*/
-import { UserService } from "./user.service";
+import { UserService } from './user.service';
 /*@common*/
-import { JwtAuthGuard } from "@common/guards";
-import { CurrentUser } from "@common/decorators";
+import { JwtAuthGuard } from '@common/guards';
+import { CurrentUser } from '@common/decorators';
 /*@entities*/
-import { User } from "@entities/user";
+import { User } from '@entities/user';
 
 @Controller('user')
 export class UserController {

@@ -1,9 +1,9 @@
 /*external modules*/
 import { Strategy } from 'passport-google-oauth2';
 import { PassportStrategy } from '@nestjs/passport';
-import { BadRequestException, Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from '@nestjs/common';
 /*@interfaces*/
-import { IUserDataInGoogle } from "../../../interfaces/user";
+import { IUserDataInGoogle } from '../../../interfaces/user';
 /*@entities*/
 
 @Injectable()

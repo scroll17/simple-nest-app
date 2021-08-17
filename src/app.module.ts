@@ -13,7 +13,6 @@ import { JobModule } from './modules/job/job.module';
 import { AppService } from './app.service';
 /*controllers*/
 import { AppController } from './app.controller';
-import { CatsController } from './modules/cats/cats.controller';
 /*@entities*/
 import { Article } from '@entities/article/article.entity';
 import { User } from '@entities/user/user.entity';

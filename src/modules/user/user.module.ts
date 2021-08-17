@@ -1,8 +1,8 @@
 /*external modules*/
-import { forwardRef, Module } from "@nestjs/common";
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 /*modules*/
-import { AuthModule } from "../auth/auth.module";
+import { AuthModule } from '../auth/auth.module';
 /*services*/
 import { UserService } from './user.service';
 /*controllers*/

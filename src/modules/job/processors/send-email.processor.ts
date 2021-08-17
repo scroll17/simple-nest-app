@@ -1,13 +1,9 @@
 /*external modules*/
-import {
-  Processor,
-  Process,
-  OnQueueFailed,
-} from '@nestjs/bull';
+import { Processor, Process, OnQueueFailed } from '@nestjs/bull';
 import { Job } from 'bull';
 import { Logger } from '@nestjs/common';
 import nodemailer, { SendMailOptions } from 'nodemailer';
-import sesTransport from 'nodemailer-ses-transport'
+import sesTransport from 'nodemailer-ses-transport';
 /*services*/
 import { MailService } from '../../mail/mail.service';
 /*other*/
@@ -40,15 +36,20 @@ export class SendEmailConsumer {
 
   @Process()
   async sendEmail(job: Job<SendEmailOptions>) {
-    this.logger.debug(`Sending email "${job.data.subject}" to "${job.data.to}"`);
+    this.logger.debug(
+      `Sending email "${job.data.subject}" to "${job.data.to}"`,
+    );
 
     if (!job.data.to.includes('@')) {
       this.logger.warn(`User "to" email doesn't have final @domain`, job.data);
       return;
     }
 
-    if(job.data.fromEmail && !job.data.fromEmail.includes('@')) {
-      this.logger.warn(`User "from" email doesn't have final @domain`, job.data);
+    if (job.data.fromEmail && !job.data.fromEmail.includes('@')) {
+      this.logger.warn(
+        `User "from" email doesn't have final @domain`,
+        job.data,
+      );
       return;
     }
 

@@ -51,7 +51,10 @@ export class AuthController {
 
   @Put('/verify-email')
   @UseGuards(JwtAuthGuard)
-  async verifyEmail(@CurrentUser() user: User, @Body('code', ParseIntPipe) code: number) {
+  async verifyEmail(
+    @CurrentUser() user: User,
+    @Body('code', ParseIntPipe) code: number,
+  ) {
     return this.authService.checkVerificationCode(user, code);
   }
 

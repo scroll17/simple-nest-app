@@ -1,1 +1,1 @@
-export { DataGenerateHelper } from './data-generate.helper'
+export { DataGenerateHelper } from './data-generate.helper';

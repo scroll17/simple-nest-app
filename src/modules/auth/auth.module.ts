@@ -1,5 +1,5 @@
 /*external modules*/
-import { forwardRef, Module } from "@nestjs/common";
+import { forwardRef, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
 /*modules*/
@@ -9,11 +9,11 @@ import { AuthService } from './auth.service';
 /*controllers*/
 import { AuthController } from './auth.controller';
 /*@common*/
-import { DataGenerateHelper } from "@common/helpers";
+import { DataGenerateHelper } from '@common/helpers';
 /*other*/
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
-import { GoogleStrategy } from "./strategies/google.strategy";
+import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [

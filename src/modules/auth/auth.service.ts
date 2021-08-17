@@ -6,20 +6,20 @@ import {
   HttpStatus,
   Injectable,
   Logger,
-  NotFoundException
-} from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { JwtService } from "@nestjs/jwt";
-import { InjectQueue } from "@nestjs/bull";
-import { Connection, Repository } from "typeorm";
-import { classToPlain } from "class-transformer";
-import { Queue } from "bull";
+  NotFoundException,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { JwtService } from '@nestjs/jwt';
+import { InjectQueue } from '@nestjs/bull';
+import { Connection, Repository } from 'typeorm';
+import { classToPlain } from 'class-transformer';
+import { Queue } from 'bull';
 /*services*/
-import { RedisService } from "../redis/redis.service";
+import { RedisService } from '../redis/redis.service';
 /*@common*/
-import { DataGenerateHelper } from "@common/helpers";
+import { DataGenerateHelper } from '@common/helpers';
 /*@entities*/
-import { User } from "@entities/user/user.entity";
+import { User } from '@entities/user/user.entity';
 /*@interfaces*/
 import { IPlainUser, IUserDataInGoogle } from '@interfaces/user';
 
@@ -103,8 +103,8 @@ export class AuthService {
       subject: `Confirm email`,
       locals: {
         code: verifyCode,
-      }
-    })
+      },
+    });
 
     return {
       user: classToPlain(user) as IPlainUser,
@@ -122,7 +122,9 @@ export class AuthService {
   public async googleLogin(googleAuthUser: IUserDataInGoogle) {
     if (!googleAuthUser) throw new BadRequestException('No user from Google');
 
-    let user = await this.usersRepository.findOne({ email: googleAuthUser.email });
+    let user = await this.usersRepository.findOne({
+      email: googleAuthUser.email,
+    });
     if (user) {
       if (user.googleId !== googleAuthUser.profileId) {
         throw new BadRequestException(
@@ -134,30 +136,33 @@ export class AuthService {
       return {
         user: classToPlain(user),
         accessToken,
-        new: false
-      }
+        new: false,
+      };
     }
 
     user = await this.usersRepository.create({
       email: googleAuthUser.email,
       googleId: googleAuthUser.profileId,
       verified: true,
-    })
+    });
     await user.save();
 
     const { accessToken } = this.generateAuthToken(user);
     return {
       user: classToPlain(user),
       accessToken,
-      new: true
-    }
+      new: true,
+    };
   }
 
   public async checkVerificationCode(user: User, code: number) {
     const client = await this.redisService.getConnection();
 
     const verifyCode = await client.get(user.email);
-    if(!verifyCode) throw new NotFoundException('Verify code not found. Please resend verify code.')
+    if (!verifyCode)
+      throw new NotFoundException(
+        'Verify code not found. Please resend verify code.',
+      );
 
     if (parseInt(verifyCode, 10) !== code) {
       throw new BadRequestException('Invalid verification code');
@@ -170,8 +175,8 @@ export class AuthService {
   }
 
   public async resendVerificationCode(user: User) {
-    if(user.verified) {
-      throw new BadRequestException('You account already verified.')
+    if (user.verified) {
+      throw new BadRequestException('You account already verified.');
     }
 
     const verifyCode = this.dataGenerateHelper.randomNumber(0, 9, 5);
@@ -185,8 +190,8 @@ export class AuthService {
       subject: `Confirm email`,
       locals: {
         code: verifyCode,
-      }
-    })
+      },
+    });
 
     return true;
   }

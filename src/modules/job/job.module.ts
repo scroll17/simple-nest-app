@@ -2,7 +2,7 @@
 import { Global, Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bull';
 /*modules*/
-import { MailModule } from "../mail/mail.module";
+import { MailModule } from '../mail/mail.module';
 /*services*/
 /*controllers*/
 /*consumers*/
@@ -10,7 +10,10 @@ import {
   AudioConsumer,
   audioProcessorName,
 } from './processors/audio.processor';
-import { SendEmailConsumer, sendEmailProcessorName } from "./processors/send-email.processor";
+import {
+  SendEmailConsumer,
+  sendEmailProcessorName,
+} from './processors/send-email.processor';
 
 const consumers = [AudioConsumer, SendEmailConsumer];
 
