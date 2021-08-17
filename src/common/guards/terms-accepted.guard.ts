@@ -1,5 +1,5 @@
 /*external modules*/
-import { Injectable, CanActivate, ExecutionContext, NotFoundException } from "@nestjs/common";
+import { Injectable, CanActivate, ExecutionContext, NotFoundException, ForbiddenException } from "@nestjs/common";
 
 @Injectable()
 export class TermsAcceptedGuard implements CanActivate {
@@ -9,6 +9,8 @@ export class TermsAcceptedGuard implements CanActivate {
 
     if(!user) throw new NotFoundException('User not found');
 
-    return user.terms;
+    if(!user.terms) throw new ForbiddenException('Terms policy not accepted.')
+
+    return true;
   }
 }
