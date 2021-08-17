@@ -18,7 +18,7 @@ import { RegisterUserDto } from './dto/register-user.dto';
 import { HttpExceptionFilter } from '@common/filters/http-exception.filter';
 import { RolesGuard } from '@common/guards/roles.guard';
 import { LocalAuthGuard, JwtAuthGuard, GoogleAuthGuard } from '@common/guards';
-import { UserFromReq } from '@common/decorators';
+import { CurrentUser } from '@common/decorators';
 /*@entities*/
 import { User } from '@entities/user';
 
@@ -35,7 +35,7 @@ export class AuthController {
 
   @Post('/login')
   @UseGuards(LocalAuthGuard)
-  async login(@UserFromReq() user: User) {
+  async login(@CurrentUser() user: User) {
     return this.authService.login(user);
   }
 
