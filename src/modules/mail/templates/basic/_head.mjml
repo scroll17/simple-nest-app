@@ -1,0 +1,43 @@
+<mj-head>
+  <mj-title><%= subject %></mj-title>
+
+  <mj-attributes>
+    <mj-image align="center" />
+    <mj-body background-color="#FFFFFF" />
+    <mj-divider border-color="#EEEEEE" border-width="1px" />
+    <mj-button background-color="#00c5cd" border-radius="4px" text-transform="uppercase" color="#FFFFFF" font-size="18px" />
+    <mj-text font-weight="300" font-size="16px" line-height="27px" />
+    <mj-table font-size="16px" line-height="27px" />
+  </mj-attributes>
+
+  <mj-style inline="inline">
+    a, a:focus, a:visited, a:active {
+      color: #00c5cd;
+    }
+
+    li {
+      padding: 5px 0;
+    }
+  </mj-style>
+
+  <mj-style inline="inline">
+    .summary-tr:first-child {
+      border-top: 2px solid #000;
+      border-bottom: 1px solid #000;
+    }
+    .summary-tr:last-child {
+      border-bottom: 2px solid #000;
+      border-top: 1px solid #000;
+    }
+    .summary-tr > td {
+      padding: 10px 0px;
+      vertical-align: top;
+    }
+    .summary-tr > td:first-child {
+      text-align: left;
+    }
+    .summary-tr > td:last-child {
+      text-align: right;
+    }
+  </mj-style>
+ </mj-head>

@@ -1,0 +1,17 @@
+<mjml>
+  <mj-include path="_head.mjml" />
+
+  <mj-body>
+    <mj-include path="_header.mjml" />
+
+    <mj-section>
+      <mj-column>
+        <mj-text>…</mj-text>
+
+        <mj-include path="_moodMeterSignature.mjml" />
+      </mj-column>
+    </mj-section>
+
+    <mj-include path="_footer.mjml" />
+  </mj-body>
+</mjml>

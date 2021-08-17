@@ -1,0 +1,20 @@
+<mjml>
+    <mj-include path="./basic/_head.mjml" />
+
+    <mj-body>
+        <mj-include path="./basic/_header.mjml" />
+
+        <mj-section>
+            <mj-column>
+
+                <mj-text>
+                    You verification code: <b><%= code %></b>
+                </mj-text>
+
+                <mj-include path="./basic/_moodMeterSignature.mjml" />
+            </mj-column>
+        </mj-section>
+
+        <mj-include path="./basic/_footer.mjml" />
+    </mj-body>
+</mjml>

@@ -1,0 +1,24 @@
+<mj-section>
+  <mj-column>
+    <mj-divider padding-top="0px" padding-left="0" padding-right="0"/>
+
+    <mj-text align="center" padding-left="0" padding-right="0">
+      <% if (doNotReply) { %>
+        Please do not reply to this message
+      <% } else { %>
+        Reply to this email directly or view it at BEYREP.
+      <% } %>
+    </mj-text>
+
+    <mj-text align="center" padding-left="0" padding-right="0">
+      <a href="https://www.moodmeter.com">www.moodmeter.com</a>
+    </mj-text>
+
+    <mj-text align="center" padding-bottom="0px" padding-left="0" padding-right="0">
+      &copy; <%= currentYear %> MoodMeter, Inc. All rights reserved.
+    </mj-text>
+    <mj-text align="center" padding="10px 0">
+      2029 Verdugo Blvd, #168, Montrose, CA 91020
+    </mj-text>
+  </mj-column>
+</mj-section>

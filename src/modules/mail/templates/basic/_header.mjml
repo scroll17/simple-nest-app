@@ -1,0 +1,6 @@
+<mj-section>
+  <mj-column padding="0 0">
+    <mj-image src="" width="200px" alt="MoodMeter Logo" />
+    <mj-divider padding-left="0" padding-right="0"/>
+  </mj-column>
+</mj-section>
