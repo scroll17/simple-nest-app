@@ -2,6 +2,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from "@nestjs/config";
 /*modules*/
 import { UserModule } from '../user/user.module';
 /*services*/
@@ -17,13 +18,19 @@ import { GoogleStrategy } from './strategies/google.strategy';
 
 @Module({
   imports: [
+    ConfigModule,
     forwardRef(() => UserModule),
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: {
-        expiresIn: '60m',
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.get('secrets.jwtSecret'),
+          signOptions: {
+            expiresIn: '60m',
+          },
+        };
       },
+      inject: [ConfigService],
     }),
   ],
   providers: [

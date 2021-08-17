@@ -1,10 +1,13 @@
 /*external modules*/
 import { Injectable, OnModuleDestroy, OnModuleInit } from '@nestjs/common';
+import { ConfigService } from "@nestjs/config";
 import Redis from 'ioredis';
 
 @Injectable()
 export class RedisService implements OnModuleInit, OnModuleDestroy {
   private connection: Redis.Redis;
+
+  constructor(private configService: ConfigService) {}
 
   async onModuleInit() {
     this.createConnection();
@@ -16,9 +19,9 @@ export class RedisService implements OnModuleInit, OnModuleDestroy {
 
   private createConnection() {
     this.connection = new Redis({
-      port: Number(process.env.REDIS_PORT),
-      host: process.env.REDIS_HOST,
-      keyPrefix: `${process.env.ENV_NAME}:`,
+      port: this.configService.get('redis.port'),
+      host: this.configService.get('redis.host'),
+      keyPrefix: `${this.configService.get('env')}:`,
     });
   }
 

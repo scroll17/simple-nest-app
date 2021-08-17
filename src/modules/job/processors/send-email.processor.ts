@@ -1,8 +1,9 @@
 /*external modules*/
 import _ from 'lodash'
 import { Processor, Process, OnQueueFailed } from '@nestjs/bull';
-import { Job } from 'bull';
+import { ConfigService } from "@nestjs/config";
 import { Logger } from '@nestjs/common';
+import { Job } from 'bull';
 import nodemailer, { SendMailOptions } from 'nodemailer';
 import sesTransport from 'nodemailer-ses-transport';
 /*services*/
@@ -14,24 +15,18 @@ export type SendEmailOptions = EmailTemplate;
 
 export const sendEmailProcessorName = 'send-email' as const;
 
-const isDev = process.env.ENV_NAME === 'dev';
-
-const EMAIL_DEBUG = process.env.EMAIL_DEBUG === 'true';
-const FROM_EMAIL = process.env.FROM_EMAIL;
-const REPLY_TO_DOMAIN = process.env.REPLY_TO_DOMAIN;
-
-const EMAIL_ACCESS_KEY_ID = process.env.EMAIL_ACCESS_KEY_ID;
-const EMAIL_SECRET_ACCESS_KEY = process.env.EMAIL_SECRET_ACCESS_KEY;
-
 @Processor(sendEmailProcessorName)
 export class SendEmailConsumer {
   private readonly logger = new Logger(this.constructor.name);
   private SESTransport: any;
 
-  constructor(private mailService: MailService) {
+  constructor(
+    private configService: ConfigService,
+    private mailService: MailService,
+  ) {
     this.SESTransport = sesTransport({
-      accessKeyId: EMAIL_ACCESS_KEY_ID,
-      secretAccessKey: EMAIL_SECRET_ACCESS_KEY,
+      accessKeyId: configService.get('secrets.emailAccessKeyId'),
+      secretAccessKey: configService.get('secrets.emailSecretAccessKey'),
       ServiceUrl: `https://${'email'}.${'us-west-2'}.amazonaws.com`,
       region: 'us-west-2',
     });
@@ -39,6 +34,8 @@ export class SendEmailConsumer {
 
   @Process()
   async sendEmail(job: Job<SendEmailOptions>) {
+    const EMAIL_DEBUG = this.configService.get('email.emailDebug');
+
     this.logger.debug(
       `Sending email "${job.data.subject}" to "${job.data.to}"`,
       job.data,
@@ -80,9 +77,9 @@ export class SendEmailConsumer {
      *    - Only send to verified domains and email addresses
      * */
     const from = `MoodMeter <${
-      !isDev && job.data.fromEmail
+      !this.configService.get('isDev') && job.data.fromEmail
         ? job.data.fromEmail
-        : EMAIL_DEBUG || FROM_EMAIL
+        : EMAIL_DEBUG || this.configService.get('email.fromEmail')
     }>`;
     const mailOption: SendMailOptions = {
       from: from,
@@ -92,7 +89,9 @@ export class SendEmailConsumer {
     };
 
     if (job.data.replyTo) {
-      mailOption['replyTo'] = `${job.data.replyTo}@${REPLY_TO_DOMAIN}`;
+      mailOption['replyTo'] = `${job.data.replyTo}@${this.configService.get(
+        'email.replyToDomain',
+      )}`;
     }
 
     if (typeof EMAIL_DEBUG === 'boolean' && EMAIL_DEBUG) {

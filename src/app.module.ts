@@ -1,7 +1,8 @@
 /*external modules*/
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER, APP_GUARD } from '@nestjs/core';
 /*modules*/
 import { UserModule } from './modules/user/user.module';
 import { ArticleModule } from './modules/article/article.module';
@@ -20,6 +21,8 @@ import { User } from '@entities/user/user.entity';
 import { LoggerMiddleware } from '@common/middlewares/logger.middleware';
 import { AllExceptionsFilter } from '@common/filters/all-exeption.filter';
 import { AuthGuard } from '@common/guards/auth.guard';
+/*other*/
+import configuration from './config/configuration'
 
 @Module({
   imports: [
@@ -31,6 +34,11 @@ import { AuthGuard } from '@common/guards/auth.guard';
     //   provide: APP_GUARD,
     //   useClass: AuthGuard,
     // },
+    ConfigModule.forRoot({
+      isGlobal: true,
+      cache: true,
+      load: [configuration],
+    }),
     TypeOrmModule.forRoot({
       type: 'postgres',
       url: `postgresql://test:test@database:5432/simple_shop`,
