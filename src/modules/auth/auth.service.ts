@@ -1,24 +1,17 @@
 /*external modules*/
-import {
-  BadRequestException,
-  ForbiddenException,
-  HttpException,
-  HttpStatus,
-  Injectable,
-  Logger,
-} from "@nestjs/common";
-import { InjectRepository } from '@nestjs/typeorm';
-import { JwtService } from '@nestjs/jwt';
-import { InjectQueue } from '@nestjs/bull';
-import { Connection, Repository } from 'typeorm';
-import { classToPlain } from 'class-transformer';
-import { Queue } from 'bull';
+import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import { InjectRepository } from "@nestjs/typeorm";
+import { JwtService } from "@nestjs/jwt";
+import { InjectQueue } from "@nestjs/bull";
+import { Connection, Repository } from "typeorm";
+import { classToPlain } from "class-transformer";
+import { Queue } from "bull";
 /*services*/
-import { RedisService } from '../redis/redis.service';
+import { RedisService } from "../redis/redis.service";
 /*@entities*/
-import { User } from '@entities/user/user.entity';
+import { User } from "@entities/user/user.entity";
 /*@interfaces*/
-import { IPlainUser, IUserDataInGoogle } from "../../interfaces/user";
+import { IPlainUser, IUserDataInGoogle } from '@interfaces/user';
 
 @Injectable()
 export class AuthService {
