@@ -21,7 +21,7 @@ import { DataGenerateHelper } from '@common/helpers';
 /*@entities*/
 import { User } from '@entities/user/user.entity';
 /*@interfaces*/
-import { IPlainUser, IUserDataInGoogle } from '@interfaces/user';
+import { IPlainUser, IUserDataInGoogle } from '@common/interfaces/user';
 
 @Injectable()
 export class AuthService {

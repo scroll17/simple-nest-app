@@ -18,9 +18,6 @@
       "@entities/*": [
         "src/database/entities/*"
       ],
-      "@interfaces/*": [
-        "src/interfaces/*"
-      ],
       "@custom-types/*": [
         "src/@custom-types/*"
       ],
