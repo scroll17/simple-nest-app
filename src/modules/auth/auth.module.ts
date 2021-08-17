@@ -8,6 +8,8 @@ import { UserModule } from '../user/user.module';
 import { AuthService } from './auth.service';
 /*controllers*/
 import { AuthController } from './auth.controller';
+/*@common*/
+import { DataGenerateHelper } from "@common/helpers";
 /*other*/
 import { LocalStrategy } from './strategies/local.strategy';
 import { JwtStrategy } from './strategies/jwt.strategy';
@@ -24,7 +26,13 @@ import { GoogleStrategy } from "./strategies/google.strategy";
       },
     }),
   ],
-  providers: [AuthService, LocalStrategy, JwtStrategy, GoogleStrategy],
+  providers: [
+    AuthService,
+    LocalStrategy,
+    JwtStrategy,
+    GoogleStrategy,
+    DataGenerateHelper,
+  ],
   controllers: [AuthController],
   exports: [JwtStrategy],
 })

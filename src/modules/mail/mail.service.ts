@@ -27,7 +27,7 @@ export class MailService {
   ): Promise<string> {
     if (this.cache[filepath]) return this.cache[filepath](data);
 
-    const filePath = path.join(__dirname, `${filepath}.mjml`);
+    const filePath = path.join(__dirname, 'templates', `${filepath}.mjml`);
     const content = await fs.promises.readFile(filePath, { encoding: 'utf8' });
 
     const template = mjml(content, {

@@ -51,15 +51,13 @@ export class AuthController {
 
   @Put('/verify-email')
   @UseGuards(JwtAuthGuard)
-  async verifyEmail(@Body('code', ParseIntPipe) code: number) {
-    await this.authService.checkVerificationCode('test@gmail.com', code);
-
-    return;
+  async verifyEmail(@CurrentUser() user: User, @Body('code', ParseIntPipe) code: number) {
+    return this.authService.checkVerificationCode(user, code);
   }
 
   @Get('/resend-verify-code')
   @UseGuards(JwtAuthGuard)
-  async resendVerifyCode() {
-    return;
+  async resendVerifyCode(@CurrentUser() user: User) {
+    return this.authService.resendVerificationCode(user);
   }
 }

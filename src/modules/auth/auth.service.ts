@@ -1,5 +1,13 @@
 /*external modules*/
-import { BadRequestException, ForbiddenException, HttpException, HttpStatus, Injectable, Logger } from "@nestjs/common";
+import {
+  BadRequestException,
+  ForbiddenException,
+  HttpException,
+  HttpStatus,
+  Injectable,
+  Logger,
+  NotFoundException
+} from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { JwtService } from "@nestjs/jwt";
 import { InjectQueue } from "@nestjs/bull";
@@ -8,6 +16,8 @@ import { classToPlain } from "class-transformer";
 import { Queue } from "bull";
 /*services*/
 import { RedisService } from "../redis/redis.service";
+/*@common*/
+import { DataGenerateHelper } from "@common/helpers";
 /*@entities*/
 import { User } from "@entities/user/user.entity";
 /*@interfaces*/
@@ -22,10 +32,12 @@ export class AuthService {
     private redisService: RedisService,
     private jwtService: JwtService,
 
+    private dataGenerateHelper: DataGenerateHelper,
+
     @InjectRepository(User)
     private usersRepository: Repository<User>,
-    @InjectQueue('audio')
-    private audioQueue: Queue,
+    @InjectQueue('send-email')
+    private sendEmailQueue: Queue,
   ) {}
 
   private generateAuthToken(user: Pick<User, 'id' | 'email'>) {
@@ -77,9 +89,22 @@ export class AuthService {
     }
 
     const user = new User(email, password);
-
     await user.hashPassword();
     await user.save();
+
+    const verifyCode = this.dataGenerateHelper.randomNumber(0, 9, 5);
+
+    const client = await this.redisService.getConnection();
+    await client.set(email, verifyCode);
+
+    await this.sendEmailQueue.add({
+      to: email,
+      template: 'confirm-email',
+      subject: `Confirm email`,
+      locals: {
+        code: verifyCode,
+      }
+    })
 
     return {
       user: classToPlain(user) as IPlainUser,
@@ -128,19 +153,40 @@ export class AuthService {
     }
   }
 
-  public async checkVerificationCode(email: string, code: number) {
+  public async checkVerificationCode(user: User, code: number) {
     const client = await this.redisService.getConnection();
 
-    let codeInRedis = await client.get(email);
-    this.logger.debug('codeInRedis => ', codeInRedis);
+    const verifyCode = await client.get(user.email);
+    if(!verifyCode) throw new NotFoundException('Verify code not found. Please resend verify code.')
 
-    const result = await client.set(email, code);
-    this.logger.debug('result => ', result);
+    if (parseInt(verifyCode, 10) !== code) {
+      throw new BadRequestException('Invalid verification code');
+    }
 
-    codeInRedis = await client.get(email);
-    this.logger.debug('codeInRedis => ', codeInRedis);
+    user.verified = true;
+    await user.save();
 
-    await this.audioQueue.add({ data: 'hello world' });
+    return true;
+  }
+
+  public async resendVerificationCode(user: User) {
+    if(user.verified) {
+      throw new BadRequestException('You account already verified.')
+    }
+
+    const verifyCode = this.dataGenerateHelper.randomNumber(0, 9, 5);
+
+    const client = await this.redisService.getConnection();
+    await client.set(user.email, verifyCode);
+
+    await this.sendEmailQueue.add({
+      to: user.email,
+      template: 'confirm-email',
+      subject: `Confirm email`,
+      locals: {
+        code: verifyCode,
+      }
+    })
 
     return true;
   }
